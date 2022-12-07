@@ -2,6 +2,7 @@ from IPython import get_ipython
 _ip = get_ipython()
 
 import glob
+import os
 from os import path
 
 ndp_loaded = False
@@ -19,7 +20,7 @@ def get_root(path):
     else:
         return get_root('/'.join(path.split('/')[:-1]))
     
-ROOT_PATH = get_root(__file__)
+ROOT_PATH = get_root(os.getcwd())
 UTILS_PATH = path.join(ROOT_PATH, "utils")
 
 
