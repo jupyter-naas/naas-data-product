@@ -2,11 +2,15 @@ from IPython import get_ipython
 _ip = get_ipython()
 import glob
 import os
+<<<<<<< HEAD
 import json
 import glob
 from tqdm import tqdm
 from os import path, mkdir
 import pytz
+=======
+from os import path
+>>>>>>> 4d4a6cc710fa580f928c98ca3ab63cd07eb5c63a
 
 ndp_loaded = False
 
@@ -22,6 +26,7 @@ def get_root(path):
         return path
     else:
         return get_root('/'.join(path.split('/')[:-1]))
+<<<<<<< HEAD
 
 # Root path
 ROOT_PATH = get_root(os.getcwd())
@@ -31,6 +36,10 @@ INPUTS_PATH = path.join(ROOT_PATH, 'inputs')
 MODELS_PATH = path.join(ROOT_PATH, 'models')
 OUTPUTS_PATH = path.join(ROOT_PATH, 'outputs')
 TESTS_PATH = path.join(ROOT_PATH, "tests")
+=======
+    
+ROOT_PATH = get_root(os.getcwd())
+>>>>>>> 4d4a6cc710fa580f928c98ca3ab63cd07eb5c63a
 UTILS_PATH = path.join(ROOT_PATH, "utils")
 
 # Params
