@@ -7,6 +7,7 @@ import glob
 from tqdm import tqdm
 from os import path, mkdir
 import pytz
+import re
 import naas
 
 ndp_loaded = False
@@ -50,8 +51,8 @@ def save_parameters(data):
         json.dump(data, f, indent=4)
         print(f"✅ Parameters saved successfully.")
         
-# Publish all to production     
-def publish_to_production(files=[], pipeline_path=None, cron=None):
+# Schedule pipeline    
+def schedule_pipeline(pipeline_path=None, cron=None, files=[]):
     """
     By default, all files in inputs, models, utils will be sent to production.
     """
@@ -75,10 +76,24 @@ def publish_to_production(files=[], pipeline_path=None, cron=None):
 def create_dir(dir_path):
     if not path.exists(dir_path):
         mkdir(dir_path)
+        
+def create_dir_from_path(dir_path):
+    if not path.exists(dir_path):
+        mkdir(dir_path)
+        print(f"✅ Directory successfully created '{dir_path}'.")
+        
+def create_dir_from_path(dir_path):
+    dirs_check = []
+    directories = dir_path.split("/")
+    for directory in directories:
+        dirs_check.append(directory)
+        dir_check = "/".join(dirs_check)
+        if len(dir_check) > 0 and not path.exists(dir_check) and not "." in dir_check:
+            create_dir(dir_check)
 
 
 utils_files = sorted(glob.glob(f"{UTILS_PATH}/*.ipynb"))
 for file in utils_files:
-    if not file.endswith("__utils__.ipynb"):
+    if not re.match(".+[0-9]{20}.+.ipynb", file) and not file.endswith("__utils__.ipynb"):
         _ip.run_line_magic('run', file)
 
