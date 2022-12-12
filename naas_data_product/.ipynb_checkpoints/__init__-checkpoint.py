@@ -97,4 +97,5 @@ utils_files = sorted(glob.glob(f"{UTILS_PATH}/*.ipynb"))
 for file in utils_files:
     if not re.match(".+[0-9]{20}.+.ipynb", file) and not file.endswith("__utils__.ipynb"):
         _ip.run_line_magic('run', file)
+        print(f"✅ utils file '{file}' successfully loaded.")
 
