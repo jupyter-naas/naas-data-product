@@ -51,13 +51,25 @@ def save_parameters(data):
         print(f"✅ Parameters saved successfully.")
         
 # Publish all to production     
-def publish_all():
-    files = f"{ROOT_PATH}/**/*"
+def publish_to_production(files=[], pipeline_path=None, cron=None):
+    """
+    By default, all files in inputs, models, utils will be sent to production.
+    """
+    if len(files) == 0:
+        inputs_files = glob.glob(f"{INPUTS_PATH}/**/*")
+        models_files = glob.glob(f"{MODELS_PATH}/**/*")
+        utils_files = glob.glob(f"{UTILS_PATH}/**/*")
+        files = inputs_files + models_files + utils_files
 
-    for file in tqdm(glob.glob(files)):
+    for file in tqdm(files):
         if path.isfile(file):
             naas.dependency.add(file, print_result=False)
     print("✅ Project published to production successfully.")
+    
+    if not pipeline_path:
+        pipeline_path = path.join(MODELS_PATH, "__pipeline__.ipynb")
+    if cron:
+        naas.scheduler.add(path=pipeline_path, cron="*/30 8-20 * * 1-5")
     
 # Create dir
 def create_dir(dir_path):
