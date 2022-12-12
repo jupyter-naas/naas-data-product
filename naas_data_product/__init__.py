@@ -89,7 +89,7 @@ def create_dir_from_path(dir_path):
     for directory in directories:
         dirs_check.append(directory)
         dir_check = "/".join(dirs_check)
-        if len(dir_check) > 0 and not path.exists(dir_check) and not "." in dir_check:
+        if len(dir_check) > 0 and not path.exists(dir_check) and not "." in directory:
             create_dir(dir_check)
 
 
