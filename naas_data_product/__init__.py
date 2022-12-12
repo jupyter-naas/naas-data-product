@@ -7,7 +7,7 @@ import glob
 from tqdm import tqdm
 from os import path, mkdir
 import pytz
-from os import path
+import naas
 
 ndp_loaded = False
 
@@ -23,6 +23,7 @@ def get_root(path):
         return path
     else:
         return get_root('/'.join(path.split('/')[:-1]))
+    
 
 # Root path
 ROOT_PATH = get_root(os.getcwd())
