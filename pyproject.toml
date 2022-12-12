@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "naas-data-product"
-version = "0.1.3"
+version = "0.1.4"
 description = ""
 authors = ["Maxime Jublou <maxime@jublou.fr>"]
 readme = "README.md"
