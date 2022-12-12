@@ -57,13 +57,14 @@ def schedule_pipeline(pipeline_path=None, cron=None, files=[]):
     By default, all files in inputs, models, utils will be sent to production.
     """
     if len(files) == 0:
-        inputs_files = glob.glob(f"{INPUTS_PATH}/**/*")
-        models_files = glob.glob(f"{MODELS_PATH}/**/*")
-        utils_files = glob.glob(f"{UTILS_PATH}/**/*")
+        inputs_files = glob.glob(f"{INPUTS_PATH}/*", recursive=True)
+        models_files = glob.glob(f"{MODELS_PATH}/**/*", recursive=True)
+        pipeline_files = glob.glob(f"{MODELS_PATH}/pipeline_executions/**/*", recursive=True)
+        utils_files = glob.glob(f"{UTILS_PATH}/*", recursive=True)
         files = inputs_files + models_files + utils_files
 
     for file in tqdm(files):
-        if path.isfile(file):
+        if path.isfile(file) and file not in pipeline_files:
             naas.dependency.add(file, print_result=False)
     print("✅ Project published to production successfully.")
     
