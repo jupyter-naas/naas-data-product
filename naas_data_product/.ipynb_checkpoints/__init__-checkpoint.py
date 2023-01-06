@@ -52,26 +52,28 @@ def save_parameters(data):
         print(f"✅ Parameters saved successfully.")
         
 # Schedule pipeline    
-def schedule_pipeline(pipeline_path=None, cron=None, files=[]):
+def schedule_pipeline(cron, pipeline_path=None, files=[]):
     """
     By default, all files in inputs, models, utils will be sent to production.
     """
     if len(files) == 0:
         inputs_files = glob.glob(f"{INPUTS_PATH}/*", recursive=True)
         models_files = glob.glob(f"{MODELS_PATH}/**/*", recursive=True)
-        pipeline_files = glob.glob(f"{MODELS_PATH}/pipeline_executions/**/*", recursive=True)
         utils_files = glob.glob(f"{UTILS_PATH}/*", recursive=True)
+        pipeline_files = glob.glob(f"{MODELS_PATH}/pipeline_executions/**/*", recursive=True)
         files = inputs_files + models_files + utils_files
-
+        
+    # Send dependency to prod 
     for file in tqdm(files):
         if path.isfile(file) and file not in pipeline_files:
             naas.dependency.add(file, print_result=False)
     print("✅ Project published to production successfully.")
     
+    # Send pipeline to prod
     if not pipeline_path:
         pipeline_path = path.join(MODELS_PATH, "__pipeline__.ipynb")
-    if cron:
-        naas.scheduler.add(path=pipeline_path, cron="*/30 8-20 * * 1-5")
+    naas.scheduler.add(path=pipeline_path, cron=cron)
+    print(f"✅ Pipeline '{pipeline_path}' scheduled to production successfully.")
     
 # Create dir
 def create_dir(dir_path):
